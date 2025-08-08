@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Iframe Content</title>
+    <style>
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <iframe id="myIframe" src="https://datalens.yandex/1w11n7upxh0wm?_no_controls=1"></iframe>
+
+    <script>
+        // Функция для удаления элементов с указанными классами
+        function removeElementsFromIframe() {
+            const iframe = document.getElementById('myIframe');
+            iframe.addEventListener('load', () => {
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    const elementsToRemove = [
+                        '.public-header__custom-section',
+                        '.dl-header-view__logo-section'
+                    ];
+
+                    elementsToRemove.forEach(selector => {
+                        const elements = iframeDoc.querySelectorAll(selector);
+                        elements.forEach(element => element.remove());
+                    });
+                } catch (error) {
+                    console.error('Ошибка при доступе к содержимому iframe:', error);
+                    console.log('Проверьте, не блокирует ли CORS доступ к содержимому iframe. Возможно, потребуется прокси.');
+                }
+            });
+        }
+
+        // Вызываем функцию после загрузки страницы
+        window.addEventListener('DOMContentLoaded', removeElementsFromIframe);
+    </script>
+</body>
+
+</html>
